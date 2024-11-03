@@ -7,7 +7,6 @@ const app = express();
 process.env.HTTP_PORT = process.env.HTTP_PORT || 5000;
 process.env.GOOGLE_APPLICATION_CREDENTIALS = path.join(__dirname, 'data/key.json');
 
-// JSON 파싱과 정적 파일 서빙
 app.use(express.text());
 app.use(express.static('public'));
 
