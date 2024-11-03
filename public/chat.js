@@ -10,8 +10,8 @@ window.onload = async () => {
 
     const client = new ChzzkClient({
         baseUrls: {
-            chzzkBaseUrl: "https://change.domain/chzzkBase",
-            gameBaseUrl: "https://change.domain/gameBase"
+            chzzkBaseUrl: "/cors/chzzk",
+            gameBaseUrl: "/cors/game"
         }
     });
     let liveDetail = null;
