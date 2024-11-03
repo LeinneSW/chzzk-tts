@@ -34,7 +34,7 @@ const processQueue = ()  => {
 
 const playTTS = (text) => {
     isPlaying = true;
-    const audio = new Audio("/text-to-speech?text=" + encodeURI(text));
+    const audio = new Audio("/text-to-speech?text=" + encodeURIComponent(text));
     const playNext = () => {
         isPlaying = false;
         processQueue();
