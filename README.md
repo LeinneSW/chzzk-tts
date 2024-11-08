@@ -8,9 +8,19 @@
 # 사용 전 확인해야할 사항
 `data/key.json` 경로에 구글 tts api 키를 넣으시면 동작합니다.
 
+## 실행 방법
+다음과 같이 실행이 가능합니다.
+```bash
+git clone https://github.com/LeinneSW/chzzk-tts.git
+cd chzzk-tts
+npm i
+node .
+```
+
 # 어떻게 쓰나요?
 치지직 링크를 참고하여 본인의 채널 id를 취득 후
 OBS에 브라우저로 http://localhost:5000/?channel=채널Id 를 등록하시면 됩니다.
+
 ## 치지직 id 취득 방법
 치지직 URL은 아래의 구조를 갖고있습니다.
 ```
