@@ -1,14 +1,16 @@
 # chzzk-tts
 치지직 채팅 TTS
 
-# 뭔가요?
-구글 text to speech api를 활용해 chzzk 채팅을 tts로 갖고오는 기능입니다  
-브라우저에 추가하셔서 사용 가능합니다
+# 프로그램 설명
+구글에서 제공하는 TTS api를 활용해 치지직 채팅을 tts로 재생하는 프로그램입니다.  
+브라우저로 연결하거나 OBS에 추가하셔서 사용 가능합니다
 
-# 사용 전 확인해야할 사항
-`data/key.json` 경로에 구글 tts api 키를 넣으시면 동작합니다.
+# 실행 전 확인해야할 사항
+구글 TTS API 사용을 위해선 api key가 필요합니다.  
+[구글 TTS API 발급](https://cloud.google.com/text-to-speech/) 페이지에서 API키를 발급받으신 후  
+`data/key.json` 경로에 발급받으신 api 키를 넣으시면 동작합니다.
 
-## 실행 방법
+# 실행 방법
 다음과 같이 실행이 가능합니다.
 ```bash
 git clone https://github.com/LeinneSW/chzzk-tts.git
@@ -17,9 +19,13 @@ npm i
 node .
 ```
 
-# 어떻게 쓰나요?
+# 사용 방법
+## OBS 등록 방법
 치지직 링크를 참고하여 본인의 채널 id를 취득 후
 OBS에 브라우저로 http://localhost:5000/?channel=채널Id 를 등록하시면 됩니다.
+## 브라우저 실행 방법
+http://localhost:5000/ 에 접속한 뒤  
+본인의 채널 Id를 칸에 입력 후 '접속' 버튼을 눌러 사용 가능합니다.
 
 ## 치지직 id 취득 방법
 치지직 URL은 아래의 구조를 갖고있습니다.
