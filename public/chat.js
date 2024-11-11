@@ -59,11 +59,12 @@ async function connectChannel(channelId){
 
 window.onload = async () => {
     const params = new URLSearchParams(location.search);
-    const success = await connectChannel(params.get('channel') || params.get('channelId'));
-    if(!success){
+    const channelId = params.get('channel') || params.get('channelId') || params.get('id');
+    if(!channelId){
         document.body.innerHTML = '채널ID: <input type="text" id="text"><br><input type="button" id="button" value="접속">';
         button.onclick = () => connectChannel(text.value);
     }else{
+        connectChannel(channelId);
         document.body.style.background = 'background: rgba(0, 0, 0, 0)';
     }
 };
