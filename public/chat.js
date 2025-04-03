@@ -8,10 +8,10 @@ async function connectChannel(channelId){
         return;
     }
 
-    if(!channelId){
+    if(typeof channelId !== 'string'){
         return false;
     }else if(channelId.length !== 32){
-        alert('채널 아이디를 올바르게 작성해주세요');
+        alert('잘못된 형태의 치지직 채널 아이디입니다.');
         return false;
     }
 
@@ -57,10 +57,10 @@ window.onload = async () => {
     const params = new URLSearchParams(location.search);
     const channelId = params.get('channel') || params.get('channelId') || params.get('id');
     if(!channelId){
-        document.body.innerHTML = '채널ID: <input type="text" id="text"><br><input type="button" id="button" value="접속">';
-        button.onclick = () => connectChannel(text.value);
+        document.body.classList.remove('hidden');
+        document.body.innerHTML = '채널ID: <input type="text" id="channel"><br><input type="button" id="button" value="접속">';
+        button.onclick = () => connectChannel(channel.value);
     }else{
         connectChannel(channelId);
-        document.body.style.background = 'background: rgba(0, 0, 0, 0)';
     }
 };
