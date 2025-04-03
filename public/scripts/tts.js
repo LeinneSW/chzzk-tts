@@ -64,8 +64,8 @@ const normalizeRepeatedText = (text) => {
 const addText = (text, nickname) => {
     // 특정 닉네임, 문자열 제외 기능
     if(
-        (options.name.enabled && nickname != null && nickname.test(options.name.regex)) ||
-        (options.messageSkip.enabled && text.text(options.messageSkip.regex))
+        (options.name.enabled && nickname != null && options.name.regex.test(nickname)) ||
+        (options.messageSkip.enabled && options.messageSkip.regex.test(text))
     ){
         return;
     }
