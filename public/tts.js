@@ -12,15 +12,22 @@ const options = (() => {
             enabled: false,
             regex: /\p{Extended_Pictographic}|\{:.*:\}/gu,
         },
+        messageSkip: { // 문자열 스킵(특정 규칙의 채팅은 아예 TTS로 읽지 않음)
+            enabled: true,
+            regex: /^[!$/].*$/u, // 각종 명령어들 TTS 제외처리
+        },
         maximumPlayTime: 6, // 1회 채팅당 최대 재생 시간, 초단위
     };
     try{
-        const {name, message, maximumPlayTime} = JSON.parse(localStorage.getItem('options') || '{}');
+        const {name, message, messageSkip, maximumPlayTime} = JSON.parse(localStorage.getItem('options') || '{}');
         typeof name?.enabled == 'boolean' && (defaultOptions.name.enabled = name.enabled);
         typeof name?.regex == 'string' && (defaultOptions.name.regex = name.regex);
 
         typeof message?.enabled == 'boolean' && (defaultOptions.message.enabled = message.enabled);
         typeof message?.regex == 'string' && (defaultOptions.message.regex = message.regex);
+
+        typeof messageSkip?.enabled == 'boolean' && (defaultOptions.messageSkip.enabled = messageSkip.enabled);
+        typeof messageSkip?.regex == 'string' && (defaultOptions.messageSkip.regex = messageSkip.regex);
 
         maximumPlayTime != null && (defaultOptions.maximumPlayTime = +maximumPlayTime || defaultOptions.maximumPlayTime);
     }catch(e){
@@ -37,7 +44,7 @@ const saveOptions = () => {
     }
 }
 
-// 반복 글자 파악(도배 방지를 위해 추가)
+// 반복 단어 파악(도배 방지를 위해 추가)
 const normalizeRepeatedText = (text) => {
     const len = Math.floor(text.length / 4);
     for(let i = 1; i <= len; ++i){ // 문자열의 길이의 1/4 까지만 확인(4회이상 반복하는지 파악)
@@ -55,8 +62,11 @@ const normalizeRepeatedText = (text) => {
 }
 
 const addText = (text, nickname) => {
-    // 닉네임 필터링
-    if(options.name.enabled && nickname != null && nickname.test(options.name.regex)){
+    // 특정 닉네임, 문자열 제외 기능
+    if(
+        (options.name.enabled && nickname != null && nickname.test(options.name.regex)) ||
+        (options.messageSkip.enabled && text.text(options.messageSkip.regex))
+    ){
         return;
     }
 
