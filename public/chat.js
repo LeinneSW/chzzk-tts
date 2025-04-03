@@ -43,15 +43,11 @@ async function connectChannel(channelId){
         pollInterval: 30 * 1000
     });
     chzzkChat.on('chat', data => {
-        const nickname = data.profile.nickname;
-        if(nickname.match(/^.*(봇|bot)$/i)){
-            return;
-        }
-        addTTSQueue(data.message);
+        addText(data.message, data.profile.nickname);
     });
     try{
         await chzzkChat.connect();
-        addTTSQueue('TTS가 활성화 되었습니다.');
+        addText('TTS가 활성화 되었습니다.');
         return true;
     }catch{}
     return false;
