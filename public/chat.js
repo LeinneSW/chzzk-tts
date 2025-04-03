@@ -57,10 +57,10 @@ window.onload = async () => {
     const params = new URLSearchParams(location.search);
     const channelId = params.get('channel') || params.get('channelId') || params.get('id');
     if(!channelId){
-        document.body.classList.remove('hidden');
-        document.body.innerHTML = '채널ID: <input type="text" id="channel"><br><input type="button" id="button" value="접속">';
+        appContainer.classList.remove('hidden');
         button.onclick = () => connectChannel(channel.value);
     }else{
+        appContainer.classList.add('hidden');
         connectChannel(channelId);
     }
 };

@@ -6,11 +6,34 @@
     <script src="tts.js"></script>
     <script type="module" src="chat.js"></script>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body{
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+        }
+
+        #appContainer{
+            padding: 8px;
+            width: 100%;
+            height: 100%;
+        }
+
         .hidden{
             display: none;
-            background: rgba(0, 0, 0, 0);
         }
     </style>
 </head>
-<body class="hidden"></body>
+<body>
+    <div id="appContainer">
+        <label for="channel">채널 ID: </label>
+        <input type="text" id="channel"><br>
+        <input type="button" id="button" value="접속">
+    </div>
+</body>
 </html>
