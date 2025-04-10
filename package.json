@@ -2,12 +2,13 @@
     "name": "chzzk-tts",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "server.js",
     "scripts": {
-        "start": "node ."
+        "start": "node src/server.js"
     },
+    "type": "module",
     "keywords": [],
-    "author": "",
+    "author": "LeinneSW",
     "license": "ISC",
     "dependencies": {
         "@google-cloud/text-to-speech": "^5.5.0",
