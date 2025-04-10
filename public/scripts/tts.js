@@ -86,31 +86,58 @@ const processQueue = ()  => {
 }
 
 // 텍스트를 음성으로 불러와 재생
-const playTTS = (text) => {
+const playTTS = async (text) => {
     isPlaying = true;
-    const audio = new Audio(`/text-to-speech?text=${encodeURIComponent(text)}`);
-    let timeoutId;
+    try{
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const res = await fetch(`/text-to-speech?text=${encodeURIComponent(text)}`);
+        const arrayBuffer = await res.arrayBuffer();
+        const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
 
-    // 공통 종료 로직
-    const finishPlayback = () => {
-        if(!isPlaying) return;
+        const maxTime = (+options.maximumPlayTime || 0);
+        const duration = audioBuffer.duration;
+
+        const gainNode = ctx.createGain();
+        gainNode.gain.value = 1;
+
+        const audioBufferSource = ctx.createBufferSource();
+        audioBufferSource.buffer = audioBuffer;
+        audioBufferSource.connect(gainNode).connect(ctx.destination);
+
+        // fade-out 조건: 실제 길이가 maxTime보다 길 경우에만 적용
+        if(duration > maxTime){
+            const fadeTime = 0.4; // 줄어들게될 시간, secs
+            const fadeOutStart = maxTime - .5;
+            setTimeout(() => {
+                const interval = 50; // 간격, msecs
+                const steps = Math.ceil(fadeTime * 100 / interval);
+                let currentStep = 0;
+                const volumeFade = setInterval(() => {
+                    currentStep++;
+                    gainNode.gain.value = 1 - (currentStep / steps);
+                    if(currentStep >= steps){
+                        clearInterval(volumeFade);
+                    }
+                }, interval);
+            }, fadeOutStart * 1000);
+
+            // 최대 재생 시간 경과 후 중단
+            setTimeout(() => {
+                audioBufferSource.stop();
+                ctx.close();
+                isPlaying = false;
+                processQueue();
+            }, maxTime * 1000);
+        }else{
+            audioBufferSource.onended = () => {
+                ctx.close();
+                isPlaying = false;
+                processQueue();
+            };
+        }
+        audioBufferSource.start();
+    }catch(error){
         isPlaying = false;
-        if(timeoutId) clearTimeout(timeoutId);
         processQueue();
-    };
-
-    // 강제 중단 타이머
-    if(options.maximumPlayTime > 0){
-        timeoutId = setTimeout(() => {
-            // 아직 재생 중이면 중단
-            if(!audio.paused){
-                audio.pause();
-                audio.currentTime = 0;
-                finishPlayback();
-            }
-        }, options.maximumPlayTime * 1000);
     }
-
-    audio.onended = finishPlayback;
-    audio.play().catch(finishPlayback);
-}
+};
